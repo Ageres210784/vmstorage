@@ -1,0 +1,14 @@
+---
+vmstorage_docker_network_name: prom_network
+vmstorage_container_name: vmstorage
+vmstorage_docker_image: "victoriametrics/vmstorage:v1.63.0-cluster"
+vmstorage_docker_labels:
+  - vmstorage
+vmstorage_storage_dir: /var/lib/vmstorage/data
+
+# address and port vminsert or balancer
+vmstorage_remotewrite_address: "{{ ansible_host }}"
+vmstorage_remotewrite_port: 8480
+vmstorage_command:
+  - '--storageDataPath=/storage'
+  - '--retentionPeriod=100d'

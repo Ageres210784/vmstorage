@@ -1,0 +1,33 @@
+---
+- name: Ensure storage directory
+  file:
+    state: directory
+    path: "{{ vmstorage_storage_dir }}"
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Start docker vmstorage container
+  docker_compose:
+    state: present
+    project_name: vmstorage
+    definition:
+      version: '3.5'
+      services:
+        alertmanager:
+          image: "{{ vmstorage_docker_image }}"
+          container_name: "{{ vmstorage_container_name }}"
+          command: "{{ vmstorage_command }}"
+          ports:
+            - "127.0.0.1:8482:8482"
+            - "127.0.0.1:8400:8400"
+            - "127.0.0.1:8401:8401"
+          volumes:
+            - "{{ vmstorage_storage_dir }}:/storage"
+          hostname: "{{ vmstorage_container_name }}"
+          restart: always
+          labels: "{{ vmstorage_docker_labels }}"
+      networks:
+        default:
+          external:
+            name: "{{ vmstorage_docker_network_name }}"
