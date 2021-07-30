@@ -5,6 +5,7 @@ vmstorage_docker_image: "victoriametrics/vmstorage:v1.63.0-cluster"
 vmstorage_docker_labels:
   - vmstorage
 vmstorage_storage_dir: /var/lib/vmstorage/data
+vmstorage_address: "127.0.0.1:"
 
 # address and port vminsert or balancer
 vmstorage_remotewrite_address: "{{ ansible_host }}"

@@ -19,9 +19,9 @@
           container_name: "{{ vmstorage_container_name }}"
           command: "{{ vmstorage_command }}"
           ports:
-            - "127.0.0.1:8482:8482"
-            - "127.0.0.1:8400:8400"
-            - "127.0.0.1:8401:8401"
+            - "{{ vmstorage_address }}8482:8482"
+            - "{{ vmstorage_address }}8400:8400"
+            - "{{ vmstorage_address }}8401:8401"
           volumes:
             - "{{ vmstorage_storage_dir }}:/storage"
           hostname: "{{ vmstorage_container_name }}"
