@@ -16,9 +16,14 @@ vmstorage_swarm_cluster: false
 vmstorage_swarm_deploy:
   mode: replicated
   replicas: 1
+  placement:
+    constraints:
+      - node.labels.victoriametrics == true
 
 # example:
 # vmstorage_swarm_deploy:
+#   mode: replicated
+#   replicas: 1
 #   placement:
 #     constraints:
 #       - node.labels.victoriametrics == true

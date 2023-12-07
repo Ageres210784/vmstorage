@@ -31,7 +31,7 @@
         default:
           external:
             name: "{{ vmstorage_docker_network_name }}"
-  when: not vmstorage_swarm_cluster or vms_swarm_manager is undefined
+  when: not vmstorage_swarm_cluster or vm_swarm_manager is undefined
 
 - name: Deploy vmstorage to docker swarm
   block:
