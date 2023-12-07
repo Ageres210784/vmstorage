@@ -10,3 +10,20 @@ vmstorage_address: "127.0.0.1"
 vmstorage_command:
   - '--storageDataPath=/storage'
   - '--retentionPeriod=100d'
+
+vmstorage_stack_name: victoriametrics
+vmstorage_swarm_cluster: false
+vmstorage_swarm_deploy:
+  mode: replicated
+  replicas: 1
+
+# example:
+# vmstorage_swarm_deploy:
+#   placement:
+#     constraints:
+#       - node.labels.victoriametrics == true
+#   resources:
+#     limits:
+#       memory: 3G
+#     reservations:
+#       memory: 1G
