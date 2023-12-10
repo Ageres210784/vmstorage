@@ -14,7 +14,7 @@
     definition:
       version: '3.5'
       services:
-        alertmanager:
+        vmstorage:
           image: "{{ vmstorage_docker_image }}"
           container_name: "{{ vmstorage_container_name }}"
           command: "{{ vmstorage_command }}"
@@ -59,7 +59,7 @@
         compose:
           - version: '3.5'
             services:
-              alertmanager:
+              vmstorage:
                 image: "{{ vmstorage_docker_image }}"
                 command: "{{ vmstorage_command }}"
                 ports:
