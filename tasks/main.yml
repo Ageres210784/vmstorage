@@ -14,7 +14,7 @@
     definition:
       version: '3.5'
       services:
-        alertmanager:
+        vmstorage:
           image: "{{ vmstorage_docker_image }}"
           container_name: "{{ vmstorage_container_name }}"
           command: "{{ vmstorage_command }}"
@@ -31,3 +31,49 @@
         default:
           external:
             name: "{{ vmstorage_docker_network_name }}"
+  when: not vmstorage_swarm_cluster or vm_swarm_manager is undefined
+
+- name: Deploy vmstorage to docker swarm
+  block:
+    - name: Ensure pip installation
+      package:
+        name: "python3-pip"
+        state: present
+
+    - name: Install newer version of pip itself
+      pip:
+        name: "pip"
+        state: latest
+        executable: pip3
+
+    - name: Install Docker Compose from pip
+      pip:
+        name: "jsondiff"
+        state: present
+        executable: pip3
+
+    - name: Deploy docker vmstorage container in swarm
+      community.docker.docker_stack:
+        state: present
+        name: "{{ vmstorage_stack_name }}"
+        compose:
+          - version: '3.5'
+            services:
+              vmstorage:
+                image: "{{ vmstorage_docker_image }}"
+                command: "{{ vmstorage_command }}"
+                ports:
+                  - "8482:8482"
+                volumes:
+                  - "{{ vmstorage_storage_dir }}:/storage"
+                hostname: "{{ vmstorage_container_name }}"
+                labels: "{{ vmstorage_docker_labels }}"
+                deploy: "{{ vmstorage_swarm_deploy }}"
+            networks:
+              default:
+                external:
+                  name: "{{ vmstorage_docker_network_name }}"
+  delegate_to: "{{ vm_swarm_manager }}"
+  when:
+    - vmstorage_swarm_cluster
+    - vm_swarm_manager is defined
