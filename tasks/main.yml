@@ -73,6 +73,7 @@
               default:
                 external:
                   name: "{{ vmstorage_docker_network_name }}"
+      run_once: True
   delegate_to: "{{ vm_swarm_manager }}"
   when:
     - vmstorage_swarm_cluster
