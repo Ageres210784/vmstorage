@@ -6,6 +6,10 @@ vmstorage_docker_labels:
   - vmstorage
 vmstorage_storage_dir: /var/lib/vmstorage/data
 vmstorage_address: "127.0.0.1"
+vmstorage_ports:
+  - "{{ vmstorage_address }}:8482:8482"
+  - "{{ vmstorage_address }}:8400:8400"
+  - "{{ vmstorage_address }}:8401:8401"
 
 vmstorage_command:
   - '--storageDataPath=/storage'

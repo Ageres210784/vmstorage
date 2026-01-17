@@ -17,10 +17,7 @@
           image: "{{ vmstorage_docker_image }}"
           container_name: "{{ vmstorage_container_name }}"
           command: "{{ vmstorage_command }}"
-          ports:
-            - "{{ vmstorage_address }}:8482:8482"
-            - "{{ vmstorage_address }}:8400:8400"
-            - "{{ vmstorage_address }}:8401:8401"
+          ports: "{{ vmstorage_ports }}"
           volumes:
             - "{{ vmstorage_storage_dir }}:/storage"
           hostname: "{{ vmstorage_container_name }}"
@@ -71,13 +68,11 @@
         name: "{{ vmstorage_stack_name }}"
         with_registry_auth: yes
         compose:
-          - version: '3.5'
-            services:
+          - services:
               vmstorage:
                 image: "{{ vmstorage_docker_image }}"
                 command: "{{ vmstorage_command }}"
-                ports:
-                  - "8482:8482"
+                ports: "{{ vmstorage_ports }}"
                 volumes:
                   - "{{ vmstorage_storage_dir }}:/storage"
                 hostname: "{{ vmstorage_container_name }}"
@@ -88,7 +83,7 @@
                 external:
                   name: "{{ vmstorage_docker_network_name }}"
       run_once: True
-  delegate_to: "{{ vm_swarm_manager }}"
+  delegate_to: "{{ vm_swarm_manager | default(omit) }}"
   when:
     - vmstorage_swarm_cluster
     - vm_swarm_manager is defined
